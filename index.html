@@ -9,13 +9,25 @@
       .is-loading {
         background: red;
       }
+      h1 {
+        color: blue;
+      }
+      .incomplete {
+        color: red;
+      }
     </style>
   </head>
   <body>
     <div id="root">
-      <button :class="{ 'is-loading': isLoading}" @click="toggleClass">
-        Toggle Me
-      </button>
+      <h2>All Tasks</h2>
+      <ul>
+        <li v-for="task in tasks" v-text="task.description"></li>
+      </ul>
+
+      <h2>Incomplete Tasks</h2>
+      <ul class="incomplete">
+        <li v-for="task in incompleteTasks" v-text="task.description"></li>
+      </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
@@ -24,12 +36,19 @@
         el: "#root",
 
         data: {
-          isLoading: false,
+          tasks: [
+            { description: "Go to the store", completed: true },
+            { description: "Go to the market", completed: false },
+            { description: "Go to the kitchen", completed: true },
+            { description: "Go to the school", completed: false },
+            { description: "Go to the bank", completed: true },
+            { description: "Go to the road", completed: true },
+          ],
         },
 
-        methods: {
-          toggleClass() {
-            this.isLoading = true;
+        computed: {
+          incompleteTasks() {
+            return this.tasks.filter((task) => !task.completed);
           },
         },
       });

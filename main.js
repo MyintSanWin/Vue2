@@ -1,3 +1,16 @@
+window.Event = new (class {
+  constructor() {
+    this.Vue = new Vue();
+  }
+
+  fire(event, data = null) {
+    this.Vue.$emit(event, data);
+  }
+
+  listen(event, callback) {
+    this.Vue.$on(event, callback);
+  }
+})();
 Vue.component("coupon", {
   template: `
   <input placeholder="Enter your coupon code" @blur="onCouponApplied">
@@ -5,7 +18,7 @@ Vue.component("coupon", {
 
   methods: {
     onCouponApplied() {
-      this.$emit("applied");
+      Event.fire("applied");
     },
   },
 });
@@ -16,9 +29,7 @@ new Vue({
     couponApplied: false,
   },
 
-  methods: {
-    onCouponApplied() {
-      this.couponApplied = true;
-    },
+  created() {
+    Event.listen("applied", () => alert("Handling it!"));
   },
 });
